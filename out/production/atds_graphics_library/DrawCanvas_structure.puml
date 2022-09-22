@@ -1,0 +1,272 @@
+@startuml
+
+/' diagram meta data start
+config=StructureConfiguration;
+{
+  "projectClassification": {
+    "searchMode": "OpenProject", // OpenProject, AllProjects
+    "includedProjects": "",
+    "pathEndKeywords": "*.impl",
+    "isClientPath": "",
+    "isClientName": "",
+    "isTestPath": "",
+    "isTestName": "",
+    "isMappingPath": "",
+    "isMappingName": "",
+    "isDataAccessPath": "",
+    "isDataAccessName": "",
+    "isDataStructurePath": "",
+    "isDataStructureName": "",
+    "isInterfaceStructuresPath": "",
+    "isInterfaceStructuresName": "",
+    "isEntryPointPath": "",
+    "isEntryPointName": "",
+    "treatFinalFieldsAsMandatory": false
+  },
+  "graphRestriction": {
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "removeByInheritance": "", // inheritance/annotation based filtering is done in a second step
+    "removeByAnnotation": "",
+    "removeByClassPackage": "", // cleanup the graph after inheritance/annotation based filtering is done
+    "removeByClassName": "",
+    "cutMappings": false,
+    "cutEnum": true,
+    "cutTests": true,
+    "cutClient": true,
+    "cutDataAccess": false,
+    "cutInterfaceStructures": false,
+    "cutDataStructures": false,
+    "cutGetterAndSetter": true,
+    "cutConstructors": true
+  },
+  "graphTraversal": {
+    "forwardDepth": 6,
+    "backwardDepth": 6,
+    "classPackageExcludeFilter": "",
+    "classPackageIncludeFilter": "",
+    "classNameExcludeFilter": "",
+    "classNameIncludeFilter": "",
+    "methodNameExcludeFilter": "",
+    "methodNameIncludeFilter": "",
+    "hideMappings": false,
+    "hideDataStructures": false,
+    "hidePrivateMethods": true,
+    "hideInterfaceCalls": true, // indirection: implementation -> interface (is hidden) -> implementation
+    "onlyShowApplicationEntryPoints": false, // root node is included
+    "useMethodCallsForStructureDiagram": "ForwardOnly" // ForwardOnly, BothDirections, No
+  },
+  "details": {
+    "aggregation": "GroupByClass", // ByClass, GroupByClass, None
+    "showClassGenericTypes": true,
+    "showMethods": true,
+    "showMethodParameterNames": true,
+    "showMethodParameterTypes": true,
+    "showMethodReturnType": true,
+    "showPackageLevels": 2,
+    "showDetailedClassStructure": true
+  },
+  "rootClass": "DrawCanvas",
+  "extensionCallbackMethod": "" // qualified.class.name#methodName - signature: public static String method(String)
+}
+diagram meta data end '/
+
+
+
+digraph g {
+    rankdir="TB"
+    splines=polyline
+    
+
+'nodes 
+subgraph cluster_1429366748 { 
+   	label=DrawCanvas
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   DrawCanvas1429366748[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)DrawCanvas</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   drawQueue: Queue&lt;GFXDrawable&gt; [0..*]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ add(dr: GFXDrawable)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ flush()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ paintComponent(g: Graphics)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ refresh()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_1732320825 { 
+   	label=GraphicsHelper
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   GraphicsHelper1732320825[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GraphicsHelper</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   dc: DrawCanvas [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   window: JFrame [0..1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ center(): Vec2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ clear()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ delay(s: double)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ drawCircle(x: double, y: double, r: double, c: Color)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ drawCircle(pt: Vec2, r: double, c: Color)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ drawCircleOutline(x: double, y: double, r: double, thickness: double, c: Color)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ drawCircleOutline(center: Vec2, r: double, thickness: double, c: Color)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ drawLine(x1: double, y1: double, x2: double, y2: double, thickness: double, c: Color)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ drawLine(p1: Vec2, p2: Vec2, thickness: double, c: Color)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ flush()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ printObjects()</TD></TR>
+<TR><TD ALIGN="LEFT" >+ refresh()</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_2662206 { 
+   	label=Vec2
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   Vec22662206[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)Vec2</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   x: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   y: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ add(other: Vec2): Vec2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ angle(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ mag(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ multiply(scalar: double): Vec2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ neg(): Vec2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ norm(): Vec2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ x(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ y(): double</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_675930861 { 
+   	label=GFXLine
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   GFXLine675930861[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GFXLine</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   clr: Color [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   p1: Vec2 [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   p2: Vec2 [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   thickness: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ clr(): Color</TD></TR>
+<TR><TD ALIGN="LEFT" >+ draw(g2d: Graphics2D)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ p1(): Vec2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ p2(): Vec2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ thickness(): double</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_771954057 { 
+   	label=GFXCircle
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   GFXCircle771954057[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GFXCircle</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   center: Vec2 [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   clr: Color [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   r: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   thickness: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ center(): Vec2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ clr(): Color</TD></TR>
+<TR><TD ALIGN="LEFT" >+ draw(g2d: Graphics2D)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ r(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ thickness(): double</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+subgraph cluster_904597895 { 
+   	label=GFXCircleOutline
+	labeljust=l
+	fillcolor="#ececec"
+	style=filled
+   
+   GFXCircleOutline904597895[
+	label=<<TABLE BORDER="1" CELLBORDER="0" CELLPADDING="4" CELLSPACING="0">
+<TR><TD ALIGN="LEFT" >(C)GFXCircleOutline</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >-   center: Vec2 [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   clr: Color [0..1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   r: double [1]</TD></TR>
+<TR><TD ALIGN="LEFT" >-   thickness: double [1]</TD></TR>
+<HR/>
+<TR><TD ALIGN="LEFT" >+ center(): Vec2</TD></TR>
+<TR><TD ALIGN="LEFT" >+ clr(): Color</TD></TR>
+<TR><TD ALIGN="LEFT" >+ draw(g2d: Graphics2D)</TD></TR>
+<TR><TD ALIGN="LEFT" >+ r(): double</TD></TR>
+<TR><TD ALIGN="LEFT" >+ thickness(): double</TD></TR>
+</TABLE>>
+	style=filled
+	margin=0
+	shape=plaintext
+	fillcolor="#FFFFFF"
+];
+} 
+
+'edges    
+DrawCanvas1429366748 -> GFXCircle771954057[arrowhead=none];
+DrawCanvas1429366748 -> GFXCircleOutline904597895[arrowhead=none];
+DrawCanvas1429366748 -> GFXLine675930861[arrowhead=none];
+GFXCircle771954057 -> Vec22662206[label="center
+[0..1]"];
+GFXCircleOutline904597895 -> Vec22662206[label="center
+[0..1]"];
+GFXLine675930861 -> Vec22662206[label="p1
+[0..1]"];
+GFXLine675930861 -> Vec22662206[label="p2
+[0..1]"];
+GraphicsHelper1732320825 -> DrawCanvas1429366748[label="dc
+[0..1]"];
+    
+}
+@enduml
