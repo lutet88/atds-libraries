@@ -6,61 +6,7 @@ import java.text.DecimalFormat;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
-/**
- * A 2D drawing canvas class, extending JComponent.
- * Encapsulates a Queue of GFXDrawable objects, which are rendered on refresh().
- * @see GFXDrawable
- * @see JComponent
- */
-class DrawCanvas extends JComponent {
-    private Queue<GFXDrawable> drawQueue = new LinkedList<>();
 
-    /**
-     * Overrides JComponent.paintComponent.
-     * Called towards the end of the paint() and repaint() routines.
-     * Iterates through the draw object queue and paints each object in order.
-     * @param g the <code>Graphics</code> object to protect
-     */
-    @Override
-    public void paintComponent(Graphics g)
-    {
-        Graphics2D g2d = (Graphics2D) g;
-        for (GFXDrawable gd : drawQueue) {
-            gd.draw(g2d);
-        }
-    }
-
-    /**
-     * Flushes the draw queue, removing all GFXDrawable objects from it.
-     */
-    public void flush() {
-        drawQueue = new LinkedList<>();
-    }
-
-    /**
-     * Adds a GFXDrawable object to the draw queue.
-     * @param dr Object to add to the draw queue.
-     */
-    public void add(GFXDrawable dr) {
-        drawQueue.add(dr);
-    }
-
-    /**
-     * Refreshes and re-renders, calling repaint().
-     * In order to draw new objects, refresh() must be called after add().
-     */
-    public void refresh() {
-        repaint();
-    }
-
-    /**
-     * Gets the current draw queue.
-     * @return a Queue with all objects that will be drawn next time refresh() is called.
-     */
-    public Queue<GFXDrawable> getDrawQueue() {
-        return drawQueue;
-    }
-}
 
 /**
  * The main GraphicsHelper, a singleton class representing one drawable window.
@@ -155,7 +101,7 @@ public class GraphicsHelper {
      * @param x2 x2 in pixels
      * @param y2 y2 in pixels
      * @param thickness width of the line stroke in pixels.
-     * @param c color of the line.
+     * @param c color of the line
      */
     public void drawLine(double x1, double y1, double x2, double y2, double thickness, Color c) {
         dc.add(new GFXLine(new Vec2(x1, y1), new Vec2(x2, y2), getDefaultStroke(thickness), c));
@@ -166,16 +112,32 @@ public class GraphicsHelper {
      * @param p1 p1, a Vec2 in pixels
      * @param p2 p2, a Vec2 in pixels
      * @param thickness width of the line stroke in pixels.
-     * @param c color of the line.
+     * @param c color of the line
      */
     public void drawLine(Vec2 p1, Vec2 p2, double thickness, Color c) {
         dc.add(new GFXLine(p1, p2, getDefaultStroke(thickness), c));
     }
 
+    /**
+     * Draws a line from (x1, y1) to (x2, y2) with a fixed thickness and color.
+     * @param x1 x1 in pixels
+     * @param y1 y1 in pixels
+     * @param x2 x2 in pixels
+     * @param y2 y2 in pixels
+     * @param stroke brush stroke
+     * @param c color of the line
+     */
     public void drawLine(double x1, double y1, double x2, double y2, Stroke stroke, Color c) {
         dc.add(new GFXLine(new Vec2(x1, y1), new Vec2(x2, y2), stroke, c));
     }
 
+    /**
+     * Draws a line from p1 to p2 with a fixed thickness and color.
+     * @param p1 p1, a Vec2 in pixels
+     * @param p2 p2, a Vec2 in pixels
+     * @param stroke brush stroke
+     * @param c color of the line
+     */
     public void drawLine(Vec2 p1, Vec2 p2, Stroke stroke, Color c) {
         dc.add(new GFXLine(p1, p2, stroke, c));
     }
@@ -224,26 +186,77 @@ public class GraphicsHelper {
         dc.add(new GFXCircleOutline(center.add(new Vec2(-r/2, -r/2)), r, getDefaultStroke(thickness), c));
     }
 
+    /**
+     * Draws the outline of a circle with radius r at (x, y) with a fixed color and brush thickness.
+     * @param x x in pixels
+     * @param y y in pixels
+     * @param r r in pixels
+     * @param stroke brush stroke
+     * @param c color of the outline stroke.
+     */
     public void drawCircleOutline(double x, double y, double r, Stroke stroke, Color c) {
         dc.add(new GFXCircleOutline(new Vec2(x - r/2, y - r/2), r, stroke, c));
     }
 
+    /**
+     * Draws the outline of a circle with radius r at a center point with a fixed color and brush thickness.
+     * @param center center, a Vec2 in pixels
+     * @param r r in pixels
+     * @param stroke brush stroke
+     * @param c color of the outline stroke.
+     */
     public void drawCircleOutline(Vec2 center, double r, Stroke stroke, Color c) {
         dc.add(new GFXCircleOutline(center.add(new Vec2(-r/2, -r/2)), r, stroke, c));
     }
 
+    /**
+     * Drqws a java.awt.Shape on the canvas.
+     * @param shape the shape
+     * @param stroke brush stroke
+     * @param strokeColor outline brush color
+     * @param fillColor fill color, or Color(255, 255, 255, 0) for transparent
+     */
     public void drawShape(Shape shape, Stroke stroke, Color strokeColor, Color fillColor) {
         dc.add(new GFXShape(shape, stroke, strokeColor, fillColor));
     }
 
+    /**
+     * Draws a String in a text box on the screen.
+     * @param pos Vec2 coordinates representing the bottom left corner of the text.
+     * @param text text string to display
+     * @param fontName name of font style/family
+     * @param fontSize font size in px
+     * @param fontStyle font style, see GFXText or Font constants
+     * @param clr font color
+     * @see GFXText
+     * @see Font
+     */
     public void drawText(Vec2 pos, String text, String fontName, int fontSize, int fontStyle, Color clr) {
         dc.add(new GFXText(pos, text, new Font(fontName, fontStyle, fontSize), clr));
     }
 
+    /**
+     * Draws a String in a text box on the screen.
+     * @param pos Vec2 coordinates representing the bottom left corner of the text.
+     * @param text text string to display
+     * @param font text font
+     * @param clr font color
+     * @see GFXText
+     * @see Font
+     */
     public void drawText(Vec2 pos, String text, Font font, Color clr) {
         dc.add(new GFXText(pos, text, font, clr));
     }
 
+    /**
+     * Draws a String in a text box on the screen, with default font style.
+     * @param pos Vec2 coordinates representing the bottom left corner of the text.
+     * @param text text string to display
+     * @param fontSize font size in px
+     * @param clr font color
+     * @see GFXText
+     * @see Font
+     */
     public void drawText(Vec2 pos, String text, int fontSize, Color clr) {
         dc.add(new GFXText(pos, text, new Font("SansSerif", GFXText.PLAIN, fontSize), clr));
     }
@@ -255,7 +268,12 @@ public class GraphicsHelper {
         System.out.println(dc.getDrawQueue().toString());
     }
 
-    public static Stroke getDefaultStroke(double thickness) {
+    /**
+     * Gets the default stroke based on a thickness value.
+     * @param thickness Thickness
+     * @return The default stroke with indicated thickness.
+     */
+    private static Stroke getDefaultStroke(double thickness) {
         return new BasicStroke((float) thickness, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND);
     }
 
@@ -278,6 +296,62 @@ public class GraphicsHelper {
     @Override
     public String toString() {
         return "GraphicsHelper@"+hashCode()+": "+dc.getDrawQueue().toString();
+    }
+
+    /**
+     * A 2D drawing canvas class, extending JComponent.
+     * Encapsulates a Queue of GFXDrawable objects, which are rendered on refresh().
+     * @see GFXDrawable
+     * @see JComponent
+     */
+    protected static class DrawCanvas extends JComponent {
+        private Queue<GFXDrawable> drawQueue = new LinkedList<>();
+
+        /**
+         * Overrides JComponent.paintComponent.
+         * Called towards the end of the paint() and repaint() routines.
+         * Iterates through the draw object queue and paints each object in order.
+         * @param g the <code>Graphics</code> object to protect
+         */
+        @Override
+        public void paintComponent(Graphics g)
+        {
+            Graphics2D g2d = (Graphics2D) g;
+            for (GFXDrawable gd : drawQueue) {
+                gd.draw(g2d);
+            }
+        }
+
+        /**
+         * Flushes the draw queue, removing all GFXDrawable objects from it.
+         */
+        public void flush() {
+            drawQueue = new LinkedList<>();
+        }
+
+        /**
+         * Adds a GFXDrawable object to the draw queue.
+         * @param dr Object to add to the draw queue.
+         */
+        public void add(GFXDrawable dr) {
+            drawQueue.add(dr);
+        }
+
+        /**
+         * Refreshes and re-renders, calling repaint().
+         * In order to draw new objects, refresh() must be called after add().
+         */
+        public void refresh() {
+            repaint();
+        }
+
+        /**
+         * Gets the current draw queue.
+         * @return a Queue with all objects that will be drawn next time refresh() is called.
+         */
+        public Queue<GFXDrawable> getDrawQueue() {
+            return drawQueue;
+        }
     }
 }
 
@@ -366,6 +440,15 @@ record Vec2 (double x, double y) {
     public double dot(Vec2 other) {
         return x * other.x() + y * other.y();
     }
+
+    /**
+     * Returns the angle between this vector and other.
+     * @param other The other Vec2.
+     * @return The angle between the two vectors, calculated using the dot product.
+     */
+    public double angleBetween(Vec2 other) {
+        return Math.acos(this.dot(other) / (this.mag() * other.mag()));
+    }
 }
 
 /**
@@ -418,6 +501,13 @@ record GFXCircleOutline (Vec2 center, double r, Stroke stroke, Color clr) implem
     }
 }
 
+/**
+ * A GFXDrawable record containing any java.awt.Shape.
+ * @param shape The shape to draw
+ * @param stroke Outline stroke
+ * @param strokeColor Outline color
+ * @param fillColor Fill color
+ */
 record GFXShape(Shape shape, Stroke stroke, Color strokeColor, Color fillColor) implements GFXDrawable{
     public void draw(Graphics2D g2d) {
         g2d.setStroke(stroke);
@@ -428,6 +518,13 @@ record GFXShape(Shape shape, Stroke stroke, Color strokeColor, Color fillColor) 
     }
 }
 
+/**
+ * A GFXDrawable text item.
+ * @param pos Bottom-left coordinate of the text box.
+ * @param text Text to be displayed
+ * @param font Font to draw the text in
+ * @param clr Text color
+ */
 record GFXText(Vec2 pos, String text, Font font, Color clr) implements GFXDrawable{
     public static final int PLAIN = Font.PLAIN;
     public static final int ITALIC = Font.ITALIC;
@@ -440,3 +537,5 @@ record GFXText(Vec2 pos, String text, Font font, Color clr) implements GFXDrawab
         g2d.drawString(text, (int) pos.x(), (int) pos.y());
     }
 }
+
+
